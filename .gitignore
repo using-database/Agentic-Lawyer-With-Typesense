@@ -1,0 +1,4 @@
+
+.env
+typesense-server-data/
+dataset/data.json

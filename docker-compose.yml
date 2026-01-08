@@ -1,0 +1,37 @@
+
+version: "3.8"
+
+services:
+  typesense:
+    image: typesense/typesense:29.0
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - ./typesense-server-data:/data
+    command: >
+      --data-dir /data
+      --api-key=K9fQ2A7zWb6J
+      --enable-cors
+    networks:
+      - typesense-net
+
+  typesense-dashboard:
+    image: ghcr.io/bfritscher/typesense-dashboard:latest
+    container_name: typesense-dashboard
+    restart: on-failure
+    ports:
+      - "8109:80"
+    environment:
+      TYPESENSE_API_KEY: K9fQ2A7zWb6J
+      TYPESENSE_HOST: typesense
+      TYPESENSE_PORT: 8108
+      TYPESENSE_PROTOCOL: http
+    depends_on:
+      - typesense
+    networks:
+      - typesense-net
+
+networks:
+  typesense-net:
+    driver: bridge
